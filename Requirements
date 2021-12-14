@@ -1,0 +1,45 @@
+SETTING UP THE DJANGO AND MANAGING THE FILE STRUCTURE.
+* Ensure you have Python (3.5 and above) installed in your system. Follow this Link to get the latest version of Python.
+
+After installing Python, open terminal and type
+
+(python3 --version)
+If you get a proper response showing the version you installed, you are good to go
+
+Setting up the virtual environment
+
+(pip install virtualenv)
+virtualenv <name of environment>
+source <name of environment>/bin/activate
+(pip install django)
+Now its time to start setting up Django
+
+django-admin startproject <Name of Project>
+cd <Name of Project>
+django-admin startapp <Name of the subproject/app>
+Now its time to start the server(default)
+
+(python manage.py runserver)
+Go to 127.0.0.1:8000 and you can see your server running.
+
+
+
+-Now its time to restructure your files
+
+-In your root directory [with project (URLProject), app (URLapp) folders and manage.py], create two new folders with the name Templates and Static
+
+-Under the Templates folder, place your HTML files
+
+-Under the Static folder, create another folder CSS and place all the static files there. This applies the same for images and JavaScript files.
+
+-Ensure to update the new assets/CSS/JS files
+
+-Change the Templates DIR in (URLProject/settings.py) to the relative path of Templates
+
+References
+*Starting Django
+*Setting up Django
+*Django Templates
+*How to set up static files in Django?
+*How to refer the static files in the templates in Django?
+
