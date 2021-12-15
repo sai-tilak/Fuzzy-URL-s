@@ -1,0 +1,44 @@
+So it's highly likely that we might lose the shortened link right after creating it. So why not mail it to yourself to keep it stored for future use.
+We just need to import send_mail from django.core.mail in URLapp/views.py
+
+Using the cookies stored in our browser's local storage, we retrieve the Unique ID for our shortened link.
+
+Using the Unique ID, we search the database and show the retrieved link with the mailing option in our template
+
+Here the request.COOKIES.get('key') helps us to extract the Unique ID and coll.find_one(...) gets the schema from MongoDB.
+
+In URLProject/settings.py add the EMAIL Details as shown here
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER') 
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD') 
+django_heroku.settings(locals())
+In your environment variables, add your email ID and password from where emails will be outgoing. Ensure the email you provide has smtp enabled
+
+Generate a custom message as the email template and send the email using send_email(...)
+
+Update the URLapp/urls.py with a route of your choice that calls this function in views.py
+
+def mailing(request):
+    if request.method == 'POST':        
+        mail = request.POST['mail']                  #requesting data entered by user
+        user = request.COOKIES.get('key')
+        details = coll.find_one({"uid": user})
+        details = parse_json(details)
+        mssg = f"Hey,\nThanks for using <name of your domain>.\nThe new url for {details['link']} is:\n{details['new']}.\nRegards,\n<your name>\n<your contact details>"
+        surl = details['new']
+        try:
+            send_mail("Shorten URLs", mssg, settings.EMAIL_HOST_USER, [mail])
+            return render(request, 'short.html', {'user':user, 'new':surl, 'success': True})        #dynamic data onto your HTML template
+        except Exception as e:
+            return render(request, 'short.html', {'user':user, 'new':surl, 'success': False})       #dynamic data onto your HTML template
+    return redirect('/')
+References
+Mailing
+Mailing-tutorial
+SMTP enabled
+Expected Outcome
+An email with your custom message should be delivered to the email you enter as test with the Original and the Shortened URL. If it fails, try checking URLProject/settings.py or if SMTP is enabled.
