@@ -1,0 +1,42 @@
+Idea behind this:
+Now finally, we have come to the stage to check if everything works fine on our localhost. If so, we can try deploying it onto a live server for everyone to use.
+We'll be using Heroku for deployment.
+Requirements
+Visit heroku.com and create an account/log in to your existing account.
+
+Create a new app, name it accordingly (but keep it short and concise). Select the region which suits you the best.
+
+Go to settings in heroku. Under config vars, add all the environment variables you used in .env one by one.
+
+In your root directory, add a Procfile (without an extension) and add web: gunicorn < name of app i.e URLapp > .wsgi
+
+Install gunicorn and dnspython using
+
+pip install gunicorn dnspython
+Since we are using virtual environment we can get a list of all installed modules.
+
+pip freeze > requirements.txt
+Create a runtime.txt file and insert the python runtime i.e python-3.8.5
+
+Sign in to your Heroku account via terminal and follow the commands here or as given under the deploy section of your Heroku app
+
+heroku login -i
+
+git init
+
+heroku git:remote -a <name of project>
+
+git add .
+git commit -am "make it better"
+git push heroku master
+This should deploy your code properly onto Heroku. Upon visiting the Heroku URL, you should see your web-app running
+You should be able to open your app from heroku dashboard itself, via "Open App" in the upper right section.
+References
+Django on Heroku - 1
+Django on Heroku - 2
+Creating Procfile
+
+Expected Outcome :
+Your Final web app should be up and running live on server working properly without showing any error(s).
+
+Congrats on making it till the end of this project, hope you have enjoyed making this and now its time to showcase it in your resume.
