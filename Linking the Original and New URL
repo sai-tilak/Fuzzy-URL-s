@@ -1,0 +1,44 @@
+LINKING THE ORIGINAL AND THE NEW URL.
+
+Idea behind this:
+Database schema consists of Unique ID (id), Original URL (link) and new URL (new)
+The new URL is uniquely created every time, so there isn't any chance of duplicates
+Whenever the new URL is called, we filter and search the database schema and redirect the user to the original URL of the schema
+Validate the HTTP or HTTPS protocols for the original URLs
+Requirements
+Try searching the collection in the database using find_one method
+
+If details are found we try validating the original URL and redirect the users back to there
+
+If details aren't found i.e an invalid link, a 404 Response is returned
+
+//
+
+Update the URLapp/urls.py with a route of your choice that calls this function in views.py
+
+My URLapp/urls.py looks like this:
+
+urlpatterns = [
+    path('',views.index, name="index"),
+    path('s/short',views.short, name="short"),
+    path('m/mail', views.mailing, name="mailing"),
+    path('api/shorten', views.geturl, name="geturl"),
+    path('<str:uid>', views.openurl, name="open"),]
+    
+The openurl function might resemble this:
+
+def openurl(request, uid):  
+    if uid != "": 
+        details = coll.find_one({"new": "<name of your domain>"+uid})
+        details = parse_json(details)
+        if details:
+            full_url = details['link']
+            if full_url.startswith("http"):
+                return redirect(full_url)
+            else:        
+                return redirect("http://"+full_url)
+        else:
+            return HttpResponse(404)
+
+Expected Outcome:
+Upon visiting the shortened URL, you should be redirected back to the original URL, which you had entered.
