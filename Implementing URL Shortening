@@ -1,0 +1,4 @@
+Idea behind this:
+First we create a Database
+A database consists of collections which in turn store our data
+Our collection has a unique id (unique for all users), the original url and the new url.
